@@ -23,6 +23,12 @@ TOKEN_URL = 'https://aip.baidubce.com/oauth/2.0/token'
 
 # 拿API token
 def fetch_token():
+    """Fetch token from baidu API
+
+        Returns:
+            token on success
+
+    """
     params = {'grant_type': 'client_credentials',
               'client_id': API_KEY,
               'client_secret': SECRET_KEY}
@@ -67,6 +73,7 @@ def login_success():
 
 # 獲取成績
 def get_grades():
+
     ActionChains(browser).move_to_element(browser.find_element_by_xpath("//li[@name='01各項查詢']/a")).perform()  # 進入各項查詢項目
     browser.find_element_by_name('A0410S').click()  # 點擊查詢個人成績
     sleep(0.5)
