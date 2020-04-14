@@ -23,8 +23,7 @@ TOKEN_URL = 'https://aip.baidubce.com/oauth/2.0/token'
 
 # 拿API token
 def fetch_token():
-    """
-        Fetch token from baidu API.
+    """Fetch token from baidu API
 
         Returns:
             token on success
@@ -57,6 +56,10 @@ def _request(url, data):
     """
         convert validate image to strings through Baidu API
 
+        Args:
+            url (str): validate image's url
+            data (str): encoded validate image's url
+
         Returns:
             return validate code if true, print err otherwise
 
@@ -70,6 +73,7 @@ def _request(url, data):
     except URLError as err:
         print(err)
 
+# 檢查登入是否成功
 def login_success():
     """
         check if login successful
@@ -85,7 +89,13 @@ def login_success():
     return False
 
 def get_grades():
+    """
+        get grades
 
+        Returns:
+            print grades
+
+    """
     ActionChains(browser).move_to_element(browser.find_element_by_xpath("//li[@name='01各項查詢']/a")).perform()
     browser.find_element_by_name('A0410S').click()
     sleep(0.5)

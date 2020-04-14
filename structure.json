@@ -1,19 +1,15 @@
-{
-  "107": {
-    "year": 107,
-    "students": [{"id": 710918,
-      "birthday": "2002/09/19",
-      "name": "蔡瑞哲",
-      "grades": [{
-        "grade": 1,
-        "year": 107,
-        "sem": 1,
-        "tests": [{
-          "id": 107111,
-          "name": "一段",
-          "scores": {'國文': '85', '英文': '95', '數學': '76', '基礎物理': '82', '基礎化學': '88', '基礎地科（選）': '83', '歷史': '73', '地理': '58', '公民與社會': '91'}
-        }]
-      }]
-    }]
-  }
-}
+"""
+        convert validate image to strings through Baidu API
+
+        Returns:
+            return validate code if true, print err otherwise
+
+    """
+
+    """
+        check if login successful
+
+        Returns:
+            return boolean, True if success, otherwise False
+
+    """
