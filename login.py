@@ -23,7 +23,8 @@ TOKEN_URL = 'https://aip.baidubce.com/oauth/2.0/token'
 
 # 拿API token
 def fetch_token():
-    """Fetch token from baidu API
+    """
+        Fetch token from baidu API.
 
         Returns:
             token on success
@@ -53,6 +54,13 @@ def fetch_token():
         exit()
 
 def _request(url, data):
+    """
+        convert validate image to strings through Baidu API
+
+        Returns:
+            return validate code if true, print err otherwise
+
+    """
     req = Request(url, data.encode('utf-8'))
     has_error = False
     try:
@@ -62,25 +70,29 @@ def _request(url, data):
     except URLError as err:
         print(err)
 
-# 檢查登入是否成功
 def login_success():
-    # 確認是否有登入錯誤的關閉按鈕
+    """
+        check if login successful
+
+        Returns:
+            return boolean, True if success, otherwise False
+
+    """
     try:
         browser.find_element_by_xpath("//div[@class='ui-dialog-buttonset']/button[1]").click()
     except NoSuchElementException:
         return True
     return False
 
-# 獲取成績
 def get_grades():
 
-    ActionChains(browser).move_to_element(browser.find_element_by_xpath("//li[@name='01各項查詢']/a")).perform()  # 進入各項查詢項目
-    browser.find_element_by_name('A0410S').click()  # 點擊查詢個人成績
+    ActionChains(browser).move_to_element(browser.find_element_by_xpath("//li[@name='01各項查詢']/a")).perform()
+    browser.find_element_by_name('A0410S').click()
     sleep(0.5)
     browser.find_element_by_id("contents").click()
     semesters = browser.find_elements_by_xpath("//tr[@class='ui-widget-content jqgrow ui-row-ltr']")
     year = []
-    for row in semesters:  # 確認學期數
+    for row in semesters:
         year.append(row.find_element_by_css_selector("td:nth-child(2)").text)
     if len(year) <= 2:
         semesters = semesters[0]
