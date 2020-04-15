@@ -1,4 +1,11 @@
-import base64, requests, sys, json, ssl, time, json, pymongo
+import base64
+import requests
+import sys
+import json
+import ssl
+import time
+import json
+import pymongo
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, ElementClickInterceptedException
 from selenium.webdriver.common.action_chains import ActionChains
@@ -14,13 +21,15 @@ image_url = OCR_URL + "?access_token=" + ocs.fetch_token()
 validate_result = ""
 options = webdriver.ChromeOptions()
 options.add_argument('--no-sandbox')
-#options.add_argument("headless")
+# options.add_argument("headless")
 browser = webdriver.Chrome(chrome_options=options)
 browser.get(url)
 while not loggedin:
     validate_result = ""
-    validate_img = browser.find_element_by_id('validatePic').get_attribute("src")[22:].encode(encoding="utf-8")
-    result_json = json.loads(ocs._request(image_url, urlencode({'image': validate_img})))
+    validate_img = browser.find_element_by_id('validatePic').get_attribute("src")[
+        22:].encode(encoding="utf-8")
+    result_json = json.loads(ocs._request(
+        image_url, urlencode({'image': validate_img})))
     for words_result in result_json["words_result"]:
         validate_result += words_result["words"]
     validate_result = validate_result.strip()

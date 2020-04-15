@@ -35,12 +35,13 @@ def fetch_token():
 
     if ('access_token' in result.keys() and 'scope' in result.keys()):
         if not 'brain_all_scope' in result['scope'].split(' '):
-            print ('please ensure has check the  ability')
+            print('please ensure has check the  ability')
             exit()
         return result['access_token']
     else:
-        print ('please overwrite the correct API_KEY and SECRET_KEY')
+        print('please overwrite the correct API_KEY and SECRET_KEY')
         exit()
+
 
 def _request(url, data):
     """Convert validate image to strings through Baidu API
@@ -62,10 +63,12 @@ def _request(url, data):
     except URLError as err:
         print(err)
 
+
 image_url = OCR_URL + "?access_token=" + fetch_token()
 validate_result = ""
 validate_img = image.encode(encoding="utf-8")
-result_json = json.loads(_request(image_url, urlencode({'image': validate_img})))
+result_json = json.loads(
+    _request(image_url, urlencode({'image': validate_img})))
 # print(result_json)
 for words_result in result_json["words_result"]:
     validate_result += words_result["words"]
