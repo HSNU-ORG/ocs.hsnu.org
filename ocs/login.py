@@ -3,7 +3,7 @@ import json
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, ElementClickInterceptedException
 from selenium.webdriver.common.action_chains import ActionChains
-from .baidu import _request
+from .baidu import get_validate_code
 from urllib.parse import urlencode, quote_plus
 
 
@@ -20,27 +20,30 @@ def login(url, account, password):
             nothing
 
     '''
+
     loggedin = False
-    login_tries = 0
+
+    # browser configuration
     options = webdriver.ChromeOptions()
     options.add_argument('--no-sandbox')
-    # options.add_argument("headless")
     browser = webdriver.Chrome(chrome_options=options)
     browser.get(url)
+
+    # try to log in
     while not loggedin:
-        validate_result = ""
-        validate_img = browser.find_element_by_id('validatePic').get_attribute("src")[
-                       22:].encode(encoding="utf-8")
-        result_json = json.loads(_request(urlencode({'image': validate_img})))
-        for words_result in result_json["words_result"]:
-            validate_result += words_result["words"]
-        validate_result = validate_result.strip()
+        # get img and turn into validate_code
+        validate_img = browser.find_element_by_id(
+            'validatePic').get_attribute("src")[22:]
+        validate_code = get_validate_code(validate_img)
+
+        # fill in the info
         browser.find_element_by_id('loginId').send_keys(account)
         browser.find_element_by_id('pas1').send_keys(password)
-        browser.find_element_by_id('validateCode').send_keys(validate_result)
+        browser.find_element_by_id('validateCode').send_keys(validate_code)
         browser.find_element_by_id('login').click()
-        time.sleep(0.1)
+        sleep(0.1)
         loggedin = login_success()
+
     browser.implicitly_wait(10)
 
 
@@ -50,10 +53,9 @@ def login_success():
 
         Returns:
             return boolean, True if success, otherwise False
-
     """
     try:
-        browser.find_element_by_xpath(
+        browser.find_efind_element_by_xpathlement_by_xpath(
             "//div[@class='ui-dialog-buttonset']/button[1]").click()
     except NoSuchElementException:
         return True
