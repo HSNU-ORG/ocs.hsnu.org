@@ -45,7 +45,7 @@ def get_validate_code(data):
     """Convert validate image to strings through Baidu API
 
         Args:
-            data (str): encoded validate image's url
+            data (str): unencoded validate image's url
 
         Returns:
             return stripped validate_code(str) if true, print err otherwise
