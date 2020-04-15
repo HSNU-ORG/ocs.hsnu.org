@@ -3,7 +3,6 @@ from urllib.request import urlopen, Request
 from urllib.error import URLError
 from urllib.parse import urlencode, quote_plus
 
-
 # account info
 API_KEY = 'qPO9LT4d030sY00t6KL8Gsqx'
 SECRET_KEY = 'nf8Z3vuN2KFIVzgvAa3odLVZcK0dklQy'
