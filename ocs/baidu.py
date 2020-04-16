@@ -42,21 +42,25 @@ def fetch_token():
         exit()
 
 
-def _request(data):
-    """
-        Convert validate image to strings through Baidu API
+def get_validate_code(data):
+    """Convert validate image to strings through Baidu API
 
         Args:
-            data (str): encoded validate image's url
+            data (str): unencoded validate image's url
 
         Returns:
-            return validate code if true, print err otherwise
+            return stripped validate_code(str) if true, print err otherwise
+
     """
     url = OCR_URL + fetch_token()
-    req = Request(url, data.encode('utf-8'))
+    img = urlencode({'image': data})
+    req = Request(url, img.encode('utf-8'))
     try:
         f = urlopen(req)
         result_str = f.read().decode()
-        return result_str
+        print(json.loads(result_str))
+        validate_code = json.loads(result_str)[
+            "words_result"][0]["words"].strip()
+        return validate_code
     except URLError as err:
         print(err)
