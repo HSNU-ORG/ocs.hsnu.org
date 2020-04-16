@@ -53,7 +53,7 @@ def login_success(password):
             return boolean, True if success, otherwise False
     """
     try:
-        browser.find_efind_element_by_xpathlement_by_xpath(
+        browser.find_element_by_xpath(
             "//div[@class='ui-dialog-buttonset']/button[1]").click()
     except NoSuchElementException:
         sleep(1)
