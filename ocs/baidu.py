@@ -11,7 +11,8 @@ TOKEN_URL = 'https://aip.baidubce.com/oauth/2.0/token'
 
 
 def fetch_token():
-    """Fetch token from baidu API
+    """
+        Fetch token from baidu API
 
         Returns:
             token on success
@@ -42,14 +43,14 @@ def fetch_token():
 
 
 def _request(data):
-    """Convert validate image to strings through Baidu API
+    """
+        Convert validate image to strings through Baidu API
 
         Args:
             data (str): encoded validate image's url
 
         Returns:
             return validate code if true, print err otherwise
-
     """
     url = OCR_URL + fetch_token()
     req = Request(url, data.encode('utf-8'))

@@ -6,7 +6,6 @@ from selenium.webdriver.common.action_chains import ActionChains
 from .baidu import _request
 from urllib.parse import urlencode, quote_plus
 
-
 def login(url, account, password):
     '''
         login to 第二代校務行政系統 automatically.
@@ -18,13 +17,13 @@ def login(url, account, password):
 
         Returns:
             nothing
-
     '''
     loggedin = False
     login_tries = 0
     options = webdriver.ChromeOptions()
     options.add_argument('--no-sandbox')
     # options.add_argument("headless")
+    global browser
     browser = webdriver.Chrome(chrome_options=options)
     browser.get(url)
     while not loggedin:
@@ -39,12 +38,11 @@ def login(url, account, password):
         browser.find_element_by_id('pas1').send_keys(password)
         browser.find_element_by_id('validateCode').send_keys(validate_result)
         browser.find_element_by_id('login').click()
-        time.sleep(0.1)
-        loggedin = login_success()
+        sleep(0.1)
+        loggedin = login_success(password)
     browser.implicitly_wait(10)
 
-
-def login_success():
+def login_success(password):
     """
         check if login successful
 
@@ -56,11 +54,20 @@ def login_success():
         browser.find_element_by_xpath(
             "//div[@class='ui-dialog-buttonset']/button[1]").click()
     except NoSuchElementException:
+        sleep(1)
+        try :
+            browser.find_element_by_id("oldpd").send_keys(password)
+            newpd = password + '1'
+            browser.find_element_by_id("newpd").send_keys(newpd)
+            browser.find_element_by_id("agnpd").send_keys(newpd)
+            browser.find_element_by_id("btnSubmit").click()
+        except NoSuchElementException:
+            return True
         return True
     return False
 
 
-def get_grades():
+def get_grades(url, account, password):
     """
         get grades
 
@@ -68,6 +75,7 @@ def get_grades():
             print grades
 
     """
+    login(url, account, password)
     ActionChains(browser).move_to_element(
         browser.find_element_by_xpath("//li[@name='01各項查詢']/a")).perform()
     browser.find_element_by_name('A0410S').click()
