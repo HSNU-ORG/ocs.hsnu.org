@@ -59,13 +59,18 @@ def login(url, account, password):
 
 def login_success(password):
     """
-        check if login successful
+        check if login successful.
+
+        Args:
+            password: password to the account logging in
 
         Returns:
-            return boolean, True if success, otherwise False
+            return integer, 0 if success, 1 if account does not exist, 2 if password wrong, 3 if validate code wrong
     """
+
     try:
-        err_text = browser.find_element_by_xpath("//div[@id='ui-id-6']/p[1]").text
+        err_text = browser.find_element_by_xpath(
+            "//div[@id='ui-id-6']/p[1]").text
         browser.find_element_by_xpath(
             "//div[@class='ui-dialog-buttonset']/button[1]").click()
         if err_text == "無此帳號！":
@@ -91,11 +96,16 @@ def get_grades(url, account, password):
     """
         get grades
 
+        Args:
+            url: the site of the school's 第二代校務行政系統 you want to go to
+            account: student's 第二代校務行政系統 account
+            password: student's 第二代校務行政系統 password
+
         Returns:
             print grades
 
     """
-    
+
     login(url, account, password)
     ActionChains(browser).move_to_element(
         browser.find_element_by_xpath("//li[@name='01各項查詢']/a")).perform()
