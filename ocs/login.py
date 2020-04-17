@@ -1,5 +1,5 @@
-from time import sleep
 import json
+from time import sleep
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, ElementClickInterceptedException
 from selenium.webdriver.common.action_chains import ActionChains
@@ -98,7 +98,6 @@ def get_grades(url, account, password):
                 semesters = semesters[:i+1]
                 break
     year = len(year) - 2
-    done = False
     for sem in semesters:
         sem.click()
         sleep(1)
