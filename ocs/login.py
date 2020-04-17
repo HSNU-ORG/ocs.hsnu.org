@@ -43,7 +43,17 @@ def login(url, account, password):
         browser.find_element_by_id('validateCode').send_keys(validate_code)
         browser.find_element_by_id('login').click()
         sleep(0.1)
-        loggedin = login_success(password)
+        login_stat = login_success(password)
+        if login_stat == 1:
+            account = input("帳號不存在,請重新輸入：")
+            global Account
+            Account = account
+        elif login_stat == 2:
+            password = input("帳號或密碼錯誤,請重新輸入：")
+            global Password
+            Password = password
+        elif login_stat == 0:
+            loggedin = True
     browser.implicitly_wait(10)
 
 
@@ -55,8 +65,15 @@ def login_success(password):
             return boolean, True if success, otherwise False
     """
     try:
+        err_text = browser.find_element_by_xpath("//div[@id='ui-id-6']/p[1]").text
         browser.find_element_by_xpath(
             "//div[@class='ui-dialog-buttonset']/button[1]").click()
+        if err_text == "無此帳號！":
+            return 1
+        elif err_text == "密碼錯誤！":
+            return 2
+        else:
+            return 3
     except NoSuchElementException:
         sleep(1)
         try:
@@ -66,9 +83,8 @@ def login_success(password):
             browser.find_element_by_id("agnpd").send_keys(newpd)
             browser.find_element_by_id("btnSubmit").click()
         except NoSuchElementException:
-            return True
-        return True
-    return False
+            return 0
+        return 0
 
 
 def get_grades(url, account, password):
@@ -79,6 +95,7 @@ def get_grades(url, account, password):
             print grades
 
     """
+    
     login(url, account, password)
     ActionChains(browser).move_to_element(
         browser.find_element_by_xpath("//li[@name='01各項查詢']/a")).perform()
