@@ -3,8 +3,9 @@ from time import sleep
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, ElementClickInterceptedException
 from selenium.webdriver.common.action_chains import ActionChains
-from .baidu import get_validate_code
 from urllib.parse import urlencode, quote_plus
+from .baidu import get_validate_code
+
 
 def login(url, account, password):
     '''
@@ -45,6 +46,7 @@ def login(url, account, password):
         loggedin = login_success(password)
     browser.implicitly_wait(10)
 
+
 def login_success(password):
     """
         check if login successful
@@ -57,7 +59,7 @@ def login_success(password):
             "//div[@class='ui-dialog-buttonset']/button[1]").click()
     except NoSuchElementException:
         sleep(1)
-        try :
+        try:
             browser.find_element_by_id("oldpd").send_keys(password)
             newpd = password + '1'
             browser.find_element_by_id("newpd").send_keys(newpd)
