@@ -149,4 +149,5 @@ def get_grades(url, account, password):
                 if s.find_element_by_css_selector("td:nth-child(5)").text[0] not in "0123456789":
                     scores[s.find_element_by_css_selector("td:nth-child(5)").text] = s.find_element_by_css_selector(
                         "td:nth-child(6)").text
-            print(scores)
+            f = open('grades.txt', 'a')
+            f.write(str(scores) + '\n')
