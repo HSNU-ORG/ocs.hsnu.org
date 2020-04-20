@@ -3,6 +3,5 @@ url = "https://sschool.tp.edu.tw/Login.action?schNo=330301"
 Account = ''
 Password = ''
 
-if __name__ == '__main__':
+def main(request):
     get_grades(url, Account, Password)
-    
