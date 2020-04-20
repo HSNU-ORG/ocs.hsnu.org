@@ -58,7 +58,6 @@ def get_validate_code(data):
     try:
         f = urlopen(req)
         result_str = f.read().decode()
-        print(json.loads(result_str))
         validate_code = json.loads(result_str)[
             "words_result"][0]["words"].strip()
         return validate_code
