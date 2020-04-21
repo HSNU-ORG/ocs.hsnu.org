@@ -151,6 +151,4 @@ def get_grades(url, account, password):
                         "td:nth-child(6)").text)
             if scores:
                 allscores.append(scores)
-    f = open("result.json", "w")
-    f.write(json.dumps(allscores, ensure_ascii=False, indent=4))
-    f.close()
+    return json.dumps(allscores, ensure_ascii=False, indent=4)
