@@ -105,7 +105,7 @@ def get_grades(url, account, password):
             print grades
 
     """
-
+    allscores = []
     login(url, account, password)
     ActionChains(browser).move_to_element(
         browser.find_element_by_xpath("//li[@name='01各項查詢']/a")).perform()
@@ -129,7 +129,7 @@ def get_grades(url, account, password):
     year = len(year) - 2
     for sem in semesters:
         sem.click()
-        sleep(1)
+        sleep(0.7)
         tests = list(browser.find_elements_by_xpath(
             "//tr[@class='ui-widget-content jqgrow ui-row-ltr']"))
         rows = len(tests) - 2
@@ -141,12 +141,16 @@ def get_grades(url, account, password):
                 browser.find_element_by_xpath(
                     "(//div[@class='ui-dialog-buttonset'])[2]/button").click()
                 break
-            sleep(1)
+            sleep(0.7)
             grades = list(browser.find_elements_by_xpath(
                 "//tr[@class='ui-widget-content jqgrow ui-row-ltr']"))[rows:-1]
             scores = {}
             for s in grades:
                 if s.find_element_by_css_selector("td:nth-child(5)").text[0] not in "0123456789":
-                    scores[s.find_element_by_css_selector("td:nth-child(5)").text] = s.find_element_by_css_selector(
-                        "td:nth-child(6)").text
-            print(scores)
+                    scores[s.find_element_by_css_selector("td:nth-child(5)").text] = int(s.find_element_by_css_selector(
+                        "td:nth-child(6)").text)
+            if scores:
+                allscores.append(scores)
+    f = open("result.json", "w")
+    f.write(json.dumps(allscores, ensure_ascii=False, indent=4))
+    f.close()
