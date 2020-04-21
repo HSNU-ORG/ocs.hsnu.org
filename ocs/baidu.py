@@ -1,11 +1,14 @@
-import json
+import json, os
 from urllib.request import urlopen, Request
 from urllib.error import URLError
 from urllib.parse import urlencode, quote_plus
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # account info
-API_KEY = 'qPO9LT4d030sY00t6KL8Gsqx'
-SECRET_KEY = 'nf8Z3vuN2KFIVzgvAa3odLVZcK0dklQy'
+API_KEY = os.getenv("API_KEY")
+SECRET_KEY = os.getenv("SECRET_KEY")
 OCR_URL = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token="
 TOKEN_URL = 'https://aip.baidubce.com/oauth/2.0/token'
 
