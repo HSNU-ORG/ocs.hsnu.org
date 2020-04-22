@@ -14,4 +14,5 @@ def main():
     f.write(get_grades(url, Account, Password))
     f.close
 
+
 main()

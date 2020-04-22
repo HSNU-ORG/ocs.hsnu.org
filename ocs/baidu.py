@@ -1,4 +1,5 @@
-import json, os
+import json
+import os
 from urllib.request import urlopen, Request
 from urllib.error import URLError
 from urllib.parse import urlencode, quote_plus
@@ -14,8 +15,7 @@ TOKEN_URL = 'https://aip.baidubce.com/oauth/2.0/token'
 
 
 def fetch_token():
-    """
-        Fetch token from baidu API
+    """Fetch token from baidu API.
 
         Returns:
             token on success
@@ -46,7 +46,7 @@ def fetch_token():
 
 
 def get_validate_code(data):
-    """Convert validate image to strings through Baidu API
+    """Convert validate image to strings through Baidu API.
 
         Args:
             data (str): unencoded validate image's url

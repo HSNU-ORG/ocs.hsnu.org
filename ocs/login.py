@@ -8,14 +8,12 @@ from .baidu import get_validate_code
 
 
 def login(url, account, password):
-    '''
-        login to 第二代校務行政系統 automatically.
-
+    '''Login to 第二代校務行政系統 automatically.
+    
         Args:
             url: the site of the school's 第二代校務行政系統 you want to go to
             account: student's 第二代校務行政系統 account
             password: student's 第二代校務行政系統 password
-
         Returns:
             nothing
     '''
@@ -58,12 +56,10 @@ def login(url, account, password):
 
 
 def login_success(password):
-    """
-        check if login successful.
+    """Check if login successful.
 
         Args:
             password: password to the account logging in
-
         Returns:
             return integer, 0 if success, 1 if account does not exist, 2 if password wrong, 3 if validate code wrong
     """
@@ -93,17 +89,14 @@ def login_success(password):
 
 
 def get_grades(url, account, password):
-    """
-        get grades
+    """Get grades from 第二代校務行政系統.
 
         Args:
             url: the site of the school's 第二代校務行政系統 you want to go to
             account: student's 第二代校務行政系統 account
             password: student's 第二代校務行政系統 password
-
         Returns:
-            print grades
-
+            test scores in .json format
     """
     allscores = []
     login(url, account, password)
@@ -128,13 +121,21 @@ def get_grades(url, account, password):
                 break
     year = len(year) - 2
     for sem in semesters:
+        yr = sem.find_element_by_css_selector("td:nth-child(2)").get_attribute('textContent')  #year
+        smt = sem.find_element_by_css_selector("td:nth-child(3)").get_attribute('textContent') #semester
+        grd = sem.find_element_by_css_selector("td:nth-child(14)").get_attribute('textContent') #grade
         sem.click()
         sleep(0.7)
         tests = list(browser.find_elements_by_xpath(
             "//tr[@class='ui-widget-content jqgrow ui-row-ltr']"))
         rows = len(tests) - 2
         tests = tests[year:year+3]
+        count = 0
         for test in tests:
+            count += 1
+            testID = yr + smt + grd + str(count) #[year][semester][grade][test] ex.[108][1][2][3]
+            scores = {}
+            scores["testID"] = testID
             try:
                 test.click()
             except ElementClickInterceptedException:
@@ -144,11 +145,9 @@ def get_grades(url, account, password):
             sleep(0.7)
             grades = list(browser.find_elements_by_xpath(
                 "//tr[@class='ui-widget-content jqgrow ui-row-ltr']"))[rows:-1]
-            scores = {}
             for s in grades:
                 if s.find_element_by_css_selector("td:nth-child(5)").text[0] not in "0123456789":
                     scores[s.find_element_by_css_selector("td:nth-child(5)").text] = int(s.find_element_by_css_selector(
                         "td:nth-child(6)").text)
-            if scores:
-                allscores.append(scores)
+            allscores.append(scores)
     return json.dumps(allscores, ensure_ascii=False, indent=4)
